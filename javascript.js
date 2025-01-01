@@ -1,3 +1,4 @@
+
 function getComputerChoice() {
     //generates a random number from one to three and returns rock, paper, or scissors based on the result.
     choice = Math.floor(Math.random() * 3) + 1;
@@ -13,27 +14,12 @@ function getComputerChoice() {
             break;
     }
 }
-function getHumanChoice() {
-    //asks the user for input and returns either rock, paper, or scissors based on the result.
-    choice = prompt("Enter rock, paper, or scissors.");
-    choice = choice.toLowerCase();
-    if (choice == "rock") { //note: CANNOT use === because when you prompt, you get a string.
-        return "rock";
-    }
-    else if (choice == "paper") {
-        return "paper";
-    }
-    else if (choice == "scissors") {
-        return "scissors";
-    }
-    else {
-        console.log("Invalid input. Refresh the page to play again.");
-    }
-}
 
 function playGame() {
     let humanScore = 0;
     let computerScore = 0;
+    let div = document.createElement("div");
+    document.body.appendChild(div);
     function playRound(humanChoice, computerChoice) {
         //allows the player to play a single round, based on what the human and the computer chose.
         let playerWin = "win";
@@ -49,24 +35,49 @@ function playGame() {
     
         if (playerWin == "win") {
             console.log(`You win! ${humanChoice} beats ${computerChoice}.`);
-            humanScore += 1;
+            humanScore++;
         }
         else if (playerWin == "draw") {
             console.log(`You tie!`);
         }
         else {
             console.log(`You lose! ${computerChoice} beats ${humanChoice}.`);
-            computerScore += 1;
+            computerScore++;
+        }
+        div.textContent = `You earned ${humanScore} points!` + ` The computer earned ${computerScore} points!`;
+        if (humanScore > 4 || computerScore > 4) {
+            if (humanScore > computerScore) {
+                div.textContent = (`Congrats, you won! You earned ${humanScore} points!` + ` The computer earned ${computerScore} points!`);
+            }
+            if (humanScore < computerScore) {
+                div.textContent = (`You lost! You earned ${humanScore} points!` + ` The computer earned ${computerScore} points!`);
+            }
         }
     }
-    for (let i = 0; i < 5; i++ ){
-        computerChoice = getComputerChoice();
-        humanChoice = getHumanChoice().toLowerCase();
-        playRound(humanChoice, computerChoice);
+    let buttons = document.querySelectorAll("button");
+    for (let i = 0; i < 3; i++) {
+            switch (i) {
+                case 0:
+                   buttons[i].addEventListener("click", () => {
+                    playRound(buttons[i].textContent.toLowerCase(), getComputerChoice());
+                    });
+                    break;
+                case 1:
+                    buttons[i].addEventListener("click", () => {
+                        playRound(buttons[i].textContent.toLowerCase(), getComputerChoice());
+                    });
+                    break;
+                case 2:
+                    buttons[i].addEventListener("click", () => {
+                        playRound(buttons[i].textContent.toLowerCase(), getComputerChoice());
+                    });
+                    break;
+            }
     }
-    console.log(`You earned ${humanScore} points!`);
-    console.log(`The computer earned ${computerScore} points!`);
-}
+    }
+    
+
+
 //declares two variables that have the score of the human and the computer
 
 playGame();
